@@ -9,16 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-                .foregroundColor(.daytimeSky)
-            
-            Image(.towerOriginal)
-        }
-        .padding()
+        HomeView()
     }
 }
 
