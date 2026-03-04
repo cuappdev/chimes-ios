@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var viewModel = LoginViewModel()
+    
     var body: some View {
-        //HomeView()
-        OnboardFlowScreen()
+        if (viewModel.loggedIn == true){
+            HomeView()
+        } else {
+            LoginView(viewModel: viewModel)
+        }
     }
 }
 
