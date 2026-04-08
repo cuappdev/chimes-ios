@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ClocktowerNotesEmitterView: View {
-    // Configure these from HomeBackgroundView
     let spawnPoint: CGPoint
     let topBoundaryEnd: CGPoint
     let bottomBoundaryEnd: CGPoint
@@ -44,7 +43,7 @@ struct ClocktowerNotesEmitterView: View {
     }
 
     private func spawnOne() {
-        let assets = ["MusicDay1", "MusicDay2", "MusicDay3"]
+        let assets = assetsForCurrentTimeOfDay()
 
         let note = Note(
             assetName: assets.randomElement()!,
@@ -59,6 +58,37 @@ struct ClocktowerNotesEmitterView: View {
         // Remove after it is off-screen
         DispatchQueue.main.asyncAfter(deadline: .now() + note.duration + 0.2) {
             notes.removeAll { $0.id == note.id }
+        }
+    }
+
+    // MARK: - Assets by time of day
+
+    private enum TimeOfDay {
+        case day
+        case sunset
+        case night
+    }
+
+    private func currentTimeOfDay(date: Date = Date(), calendar: Calendar = .current) -> TimeOfDay {
+        let hour = calendar.component(.hour, from: date)
+        switch hour {
+        case 6..<17:
+            return .day
+        case 17..<20:
+            return .sunset
+        default:
+            return .night
+        }
+    }
+
+    private func assetsForCurrentTimeOfDay() -> [String] {
+        switch currentTimeOfDay() {
+        case .day:
+            return ["MusicDay1", "MusicDay2", "MusicDay3"]
+        case .sunset:
+            return ["MusicSunset1", "MusicSunset2", "MusicSunset3"]
+        case .night:
+            return ["MusicNight1", "MusicNight2", "MusicNight3"]
         }
     }
 
@@ -95,7 +125,6 @@ struct ClocktowerNotesEmitterView: View {
     }
 
     private func biasedTowardTop(low: CGFloat, high: CGFloat) -> CGFloat {
-        // u^power biases toward low (top)
         let u = CGFloat.random(in: 0...1)
         let power: CGFloat = 1.8
         let biased = pow(u, power)
@@ -111,9 +140,9 @@ private struct FloatingNote: View {
         Image(note.assetName)
             .resizable()
             .scaledToFit()
-            .frame(width: 27.4598, height: 29.99999) // Figma size
+            .frame(width: 27.4598, height: 29.99999)
             .rotationEffect(.degrees(note.rotation))
-            .shadow(color: .black.opacity(0.11), radius: 2, x: 0, y: 1) // Figma shadow
+            .shadow(color: .black.opacity(0.11), radius: 2, x: 0, y: 1)
             .position(x: animate ? note.end.x : note.start.x,
                       y: animate ? note.end.y : note.start.y)
             .onAppear {
