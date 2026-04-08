@@ -71,15 +71,7 @@ struct HomeBackgroundView: View {
                 let towerW: CGFloat = 164
                 let towerX = geo.size.width - 29 - towerW
                 let towerY: CGFloat = 165
-
-                // Notes emitter
-                ClocktowerNotesEmitterView(
-                    spawnPoint: CGPoint(x: towerX + 118, y: towerY + 128),
-                    topBoundaryEnd: CGPoint(x: 28, y: 70),
-                    bottomBoundaryEnd: CGPoint(x: 12, y: 520),
-                    spawnInterval: 0.55
-                )
-
+                
                 // Slope
                 Image(slopeAssetName)
                     .resizable()
@@ -98,6 +90,14 @@ struct HomeBackgroundView: View {
                         .shadow(color: .black.opacity(0.18), radius: 2, x: 0, y: 1)
                 }
                 
+                // Notes emitter
+                ClocktowerNotesEmitterView(
+                    spawnPoint: CGPoint(x: towerX + 118, y: towerY + 128),
+                    topBoundaryEnd: CGPoint(x: 28, y: 70),
+                    bottomBoundaryEnd: CGPoint(x: 12, y: 520),
+                    spawnInterval: 0.55
+                )
+
                 // TreesFront
                 if !isNight {
                     Image("TreesFront")
