@@ -8,17 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var viewModel = LoginViewModel()
-    
+    @State var viewModel: LoginViewModel
+
+    init(authManager: AuthenticationManager) {
+        _viewModel = State(initialValue: LoginViewModel(authManager: authManager))
+    }
+
     var body: some View {
-        if (viewModel.loggedIn == true){
-            HomeView()
-        } else {
-            LoginView(viewModel: viewModel)
+        Group {
+            if viewModel.loggedIn {
+                HomeView()
+            } else {
+                LoginView(viewModel: viewModel)
+            }
         }
+        .animation(.easeInOut(duration: 0.3), value: viewModel.loggedIn)
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(authManager: AuthenticationManager())
 }

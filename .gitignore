@@ -9,3 +9,7 @@ ChimesSecrets/**
 
 ## API
 ChimesAPI/**
+Chimes/Info.plist
+Chimes/Info.plist
+Chimes/ChimesSecrets/GoogleService-Info.plist
+/Chimes/ChimesSecrets

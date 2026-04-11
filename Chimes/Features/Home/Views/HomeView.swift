@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct HomeView: View {
     @State private var vm = HomeViewModel()
@@ -38,6 +39,23 @@ struct HomeView: View {
                 .padding(.bottom, 45)
             }
             .ignoresSafeArea(.container, edges: .top)
+
+            // temporary log out
+            VStack {
+                HStack {
+                    Spacer()
+                    Button("Log Out") {
+                        try? Auth.auth().signOut()
+                    }
+                    .font(.caption)
+                    .padding(8)
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(8)
+                    .padding(.trailing, 16)
+                    .padding(.top, 50)
+                }
+                Spacer()
+            }
         }
     }
 }

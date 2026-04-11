@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6960B5432F58F4BF001306E8 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6960B5422F58F4BF001306E8 /* FirebaseAnalytics */; };
+		6960B5452F58F4BF001306E8 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6960B5442F58F4BF001306E8 /* FirebaseAuth */; };
+		6960B5472F58F4BF001306E8 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 6960B5462F58F4BF001306E8 /* FirebaseCore */; };
+		6960B54C2F58F5A5001306E8 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 6960B54B2F58F5A5001306E8 /* GoogleSignIn */; };
+		6960B54E2F58F5A5001306E8 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6960B54D2F58F5A5001306E8 /* GoogleSignInSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		69BC6AEB2F466BB10091E88C /* Chimes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chimes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -14,7 +22,7 @@
 		695D52EC2F4FBA8B00CDB980 /* Exceptions for "Chimes" folder in "Chimes" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				ChimesSecrets/Info.plist,
 			);
 			target = 69BC6AEA2F466BB10091E88C /* Chimes */;
 		};
@@ -36,6 +44,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6960B54E2F58F5A5001306E8 /* GoogleSignInSwift in Frameworks */,
+				6960B5432F58F4BF001306E8 /* FirebaseAnalytics in Frameworks */,
+				6960B54C2F58F5A5001306E8 /* GoogleSignIn in Frameworks */,
+				6960B5472F58F4BF001306E8 /* FirebaseCore in Frameworks */,
+				6960B5452F58F4BF001306E8 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +91,11 @@
 			);
 			name = Chimes;
 			packageProductDependencies = (
+				6960B5422F58F4BF001306E8 /* FirebaseAnalytics */,
+				6960B5442F58F4BF001306E8 /* FirebaseAuth */,
+				6960B5462F58F4BF001306E8 /* FirebaseCore */,
+				6960B54B2F58F5A5001306E8 /* GoogleSignIn */,
+				6960B54D2F58F5A5001306E8 /* GoogleSignInSwift */,
 			);
 			productName = Chimes;
 			productReference = 69BC6AEB2F466BB10091E88C /* Chimes.app */;
@@ -107,6 +125,10 @@
 			);
 			mainGroup = 69BC6AE22F466BB10091E88C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6960B5412F58F4BF001306E8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				6960B54A2F58F5A5001306E8 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 69BC6AEC2F466BB10091E88C /* Products */;
 			projectDirPath = "";
@@ -196,6 +218,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				"OTHER_LDFLAGS[arch=*]" = "";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -253,6 +276,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				"OTHER_LDFLAGS[arch=*]" = "";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
@@ -281,6 +305,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cornellappdev.Chimes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -315,6 +340,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cornellappdev.Chimes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -349,6 +375,53 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6960B5412F58F4BF001306E8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.10.0;
+			};
+		};
+		6960B54A2F58F5A5001306E8 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6960B5422F58F4BF001306E8 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6960B5412F58F4BF001306E8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		6960B5442F58F4BF001306E8 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6960B5412F58F4BF001306E8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		6960B5462F58F4BF001306E8 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6960B5412F58F4BF001306E8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		6960B54B2F58F5A5001306E8 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6960B54A2F58F5A5001306E8 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		6960B54D2F58F5A5001306E8 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6960B54A2F58F5A5001306E8 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 69BC6AE32F466BB10091E88C /* Project object */;
 }

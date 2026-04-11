@@ -40,32 +40,35 @@ struct LoginView: View {
 
                 // 2. Login Buttons Appears
                 if animationPhase == 2 {
-                    VStack {
-                        Button("Log-in with Cornell netID") {
-                            // TODO:
-                            viewModel.logIn()
-                        }
-                        .buttonStyle(WhitePillButtonStyle())
+                    if viewModel.authManager.isLoading {
+                        ProgressView()
+                            .tint(.gray)
+                            .padding(.top, 40)
+                    } else {
+                        VStack {
+                            Button("Log-in with Cornell netID") {
+                                viewModel.logIn()
+                            }
+                            .buttonStyle(WhitePillButtonStyle())
 
-                        // Your horizontal line
-                        Rectangle()
-                            .fill(Color.gray)
-                            .frame(height: 0.5)
-                            .frame(width: 196)
-                            .padding(.vertical, 36)
+                            Rectangle()
+                                .fill(Color.gray)
+                                .frame(height: 0.5)
+                                .frame(width: 196)
+                                .padding(.vertical, 36)
 
-                        Button("log in without an account") {
-                            // TODO
-                            viewModel.logIn()
+                            Button("log in without an account") {
+                                viewModel.logInAsGuest()
+                            }
+                            .font(.caption)
+                            .underline()
+                            .foregroundColor(.gray)
                         }
-                        .font(.caption)
-                        .underline()
-                        .foregroundColor(.gray)
+                        .padding(.top, 40)
+                        .transition(
+                            .opacity.combined(with: .move(edge: .bottom))
+                        )
                     }
-                    .padding(.top, 40)
-                    .transition(
-                        .opacity.combined(with: .move(edge: .bottom))
-                    )
                 }
 
                 Spacer()
