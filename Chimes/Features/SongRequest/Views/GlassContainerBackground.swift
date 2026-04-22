@@ -18,7 +18,7 @@ struct GlassContainerBackground: View {
 
             shape.fill(Color.black.opacity(0))
 
-            shape.fill(Color(red: 30 / 255.0,  green: 3 / 255.0,   blue: 3 / 255.0).opacity(0.78))
+//            shape.fill(Color(red: 30 / 255.0,  green: 3 / 255.0,   blue: 3 / 255.0).opacity(0.78))
             shape.fill(Color(red: 255 / 255.0, green: 243 / 255.0, blue: 243 / 255.0).opacity(0.36))
                 .blendMode(.colorDodge)
 
