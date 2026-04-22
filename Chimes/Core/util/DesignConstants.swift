@@ -15,6 +15,7 @@ struct DesignConstants {
         static let H2Regular = Font.custom("Montserrat-Regular", size: 18)
         
         static let H3SemiBold = Font.custom("Montserrat-SemiBold", size: 16)
+        static let H3Medium = Font.custom("Montserrat-Medium", size: 16)
         static let H3Regular = Font.custom("Montserrat-Regular", size: 16)
         
         static let P = Font.custom("Inter", size: 15)
