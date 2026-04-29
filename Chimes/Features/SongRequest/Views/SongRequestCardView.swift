@@ -14,6 +14,8 @@ struct SongRequestCardView: View {
     var suggestions: [RequestedSong] = []
 
     @State private var selectedSongID: RequestedSong.ID?
+    @State private var confirmedSong: RequestedSong?
+    @FocusState private var isInputFocused: Bool
 
     private let secondaryTextColor = Color(red: 0x5B / 255.0,
                                            green: 0x48 / 255.0,
@@ -45,16 +47,22 @@ struct SongRequestCardView: View {
                 .foregroundStyle(secondaryTextColor)
                 .padding(.top, 7)
 
-            songInput
-                .padding(.top, 18)
-                .overlay(alignment: .bottom) {
-                    suggestionDropdown
-                        .alignmentGuide(.bottom) { _ in 0 }
-                }
+            if let song = confirmedSong {
+                SelectedSongCard(song: song, onCancel: clearSelection)
+                    .padding(.top, 18)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                songInput
+                    .padding(.top, 18)
+                    .overlay(alignment: .bottom) {
+                        suggestionDropdown
+                            .alignmentGuide(.bottom) { _ in 0 }
+                    }
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(EdgeInsets(top: 18, leading: 20, bottom: 12, trailing: 20))
-        .frame(height: 151)
+        .frame(minHeight: 151)
         .background(GlassContainerBackground())
         .padding(.horizontal, 21)
     }
@@ -73,6 +81,12 @@ struct SongRequestCardView: View {
                 .tracking(-0.45)
                 .foregroundStyle(Color("PrimaryText"))
                 .textFieldStyle(.plain)
+                .focused($isInputFocused)
+                .submitLabel(.done)
+                .onSubmit(commitSelection)
+                .onChange(of: isInputFocused) { _, focused in
+                    if !focused { commitSelection() }
+                }
         }
         .padding(.horizontal, 20)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -106,5 +120,21 @@ struct SongRequestCardView: View {
             .frame(maxWidth: .infinity)
             .transition(.opacity.combined(with: .move(edge: .top)))
         }
+    }
+
+    // MARK: - Selection lifecycle
+
+    private func commitSelection() {
+        guard let id = selectedSongID,
+              let song = suggestions.first(where: { $0.id == id })
+        else { return }
+        confirmedSong = song
+        songText = song.title
+    }
+
+    private func clearSelection() {
+        confirmedSong = nil
+        selectedSongID = nil
+        songText = ""
     }
 }
