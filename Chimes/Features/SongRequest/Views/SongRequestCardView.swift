@@ -10,6 +10,11 @@ import SwiftUI
 struct SongRequestCardView: View {
     @Binding var songText: String
 
+    /// Songs offered as autocomplete suggestions while the user types.
+    var suggestions: [RequestedSong] = []
+
+    @State private var selectedSongID: RequestedSong.ID?
+
     private let secondaryTextColor = Color(red: 0x5B / 255.0,
                                            green: 0x48 / 255.0,
                                            blue: 0x48 / 255.0)
@@ -17,6 +22,15 @@ struct SongRequestCardView: View {
     private let inputPlaceholderColor = Color(red: 0xA3 / 255.0,
                                               green: 0xA3 / 255.0,
                                               blue: 0xA3 / 255.0)
+
+    private var filteredSuggestions: [RequestedSong] {
+        let query = songText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !query.isEmpty else { return [] }
+        return suggestions.filter { song in
+            song.title.localizedCaseInsensitiveContains(query)
+                || song.artist.localizedCaseInsensitiveContains(query)
+        }
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -33,6 +47,10 @@ struct SongRequestCardView: View {
 
             songInput
                 .padding(.top, 18)
+                .overlay(alignment: .bottom) {
+                    suggestionDropdown
+                        .alignmentGuide(.bottom) { _ in 0 }
+                }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(EdgeInsets(top: 18, leading: 20, bottom: 12, trailing: 20))
@@ -67,5 +85,26 @@ struct SongRequestCardView: View {
             RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .stroke(Color("Stroke"), lineWidth: 1)
         )
+    }
+
+    @ViewBuilder
+    private var suggestionDropdown: some View {
+        let matches = filteredSuggestions
+        if !matches.isEmpty {
+            VStack(spacing: 0) {
+                ForEach(matches) { song in
+                    SongSuggestionRow(
+                        song: song,
+                        isSelected: selectedSongID == song.id
+                    ) {
+                        selectedSongID = song.id
+                    }
+                }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+            .shadow(color: .black.opacity(0.08), radius: 6, x: 0, y: 4)
+            .frame(maxWidth: .infinity)
+            .transition(.opacity.combined(with: .move(edge: .top)))
+        }
     }
 }

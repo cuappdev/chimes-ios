@@ -13,10 +13,10 @@ struct SongRequestView: View {
 
     // Placeholder data until a backend is wired in.
     private let recentlyRequested: [RequestedSong] = [
-        .init(title: "SOS", artist: "sza", artworkAssetName: nil),
-        .init(title: "SOS", artist: "sza", artworkAssetName: nil),
-        .init(title: "SOS", artist: "sza", artworkAssetName: nil),
-        .init(title: "SOS", artist: "sza", artworkAssetName: nil)
+        .init(title: "SOS", artist: "sza", artworkAssetName: "ArtworkSOS"),
+        .init(title: "Daisies", artist: "Justin Bieber", artworkAssetName: "ArtworkDaisies"),
+        .init(title: "Closer", artist: "The Chainsmokers", artworkAssetName: "ArtworkCloser"),
+        .init(title: "679", artist: "Fetty Wap", artworkAssetName: "Artwork679")
     ]
 
     var body: some View {
@@ -26,13 +26,17 @@ struct SongRequestView: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 0) {
                     SongRequestHeaderView(onBell: { dismiss() })
-                        .zIndex(1) // keep dropdown above the cards below
+                        .zIndex(2) // burger dropdown above all cards (incl. the autocomplete card)
 
                     SongRequestWarningView()
                         .padding(.top, 36)
 
-                    SongRequestCardView(songText: $songText)
-                        .padding(.top, 28)
+                    SongRequestCardView(
+                        songText: $songText,
+                        suggestions: recentlyRequested
+                    )
+                    .padding(.top, 28)
+                    .zIndex(1) 
 
                     RecentlyRequestedSongsView(songs: recentlyRequested)
                         .padding(.top, 28)
