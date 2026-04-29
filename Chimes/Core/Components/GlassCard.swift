@@ -7,6 +7,21 @@
 
 import SwiftUI
 
+/// Chimes-specific Glass UI container.
+///
+/// Inspired by Apple's Liquid Glass but customized for Chimes. Composed of
+/// three stacked layers (rendered back-to-front):
+///   1. Last layer  – native Liquid Glass material (refraction / depth / frost).
+///   2. Middle layer – warm fills: `#FFF3F3` @ 36% over `#1E0303` @ 78% with
+///      Color Dodge blending.
+///   3. Top layer    – `#ED9F9F` @ 8% pink bloom with Hard Light blending and
+///      a heavy layer blur.
+///
+/// Note: this layered system applies to all Chimes glass surfaces *except*
+/// circular buttons (see `GlassCircle`). We intentionally don't apply a
+/// SwiftUI `.shadow` modifier here — that would rasterize the glass into an
+/// offscreen layer and cause Color Dodge / Hard Light to collapse to dark
+/// muddy output. Liquid Glass already provides intrinsic depth.
 struct GlassCard<Content: View>: View {
     let cornerRadius: CGFloat
     let content: Content
@@ -21,30 +36,51 @@ struct GlassCard<Content: View>: View {
             .padding(.vertical, 14)
             .padding(.horizontal, 22)
             .background {
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(Color.white.opacity(0.18))
-                    .background(.ultraThinMaterial)
+                GlassBackground(cornerRadius: cornerRadius)
             }
-            .overlay {
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(Color.white.opacity(0.35), lineWidth: 1)
+    }
+}
 
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(
-                        LinearGradient(
-                            colors: [
-                                Color.white.opacity(0.28),
-                                Color.white.opacity(0.06),
-                                Color.clear
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .blendMode(.softLight)
-                    .opacity(0.7)
+// MARK: - Layered glass background
+
+private struct GlassBackground: View {
+    let cornerRadius: CGFloat
+
+    // Middle-layer tints
+    private let middleLight = Color(red: 255 / 255, green: 243 / 255, blue: 243 / 255) // #FFF3F3
+    private let middleDark  = Color(red:  30 / 255, green:   3 / 255, blue:   3 / 255) // #1E0303
+
+    // Top-layer bloom
+    private let topBloom = Color(red: 237 / 255, green: 159 / 255, blue: 159 / 255) // #ED9F9F
+
+    var body: some View {
+        let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+
+        // ── Last layer: native Liquid Glass material (refraction / depth / frost).
+        Color.clear
+            .glassEffect(.regular, in: shape)
+            .overlay {
+                // ── Middle + top tinted layers.
+                //
+                // No `compositingGroup()` here — that would isolate the blend
+                // modes against transparent pixels (which makes Color Dodge
+                // collapse to dark/muddy output). Without it, the Color Dodge
+                // and Hard Light fills blend against the live glass beneath,
+                // matching how Figma composes these layers.
+                ZStack {
+                    shape.fill(middleLight.opacity(0.36))
+
+                    shape
+                        .fill(middleDark.opacity(0.78))
+                        .blendMode(.colorDodge)
+
+                    shape
+                        .fill(topBloom.opacity(0.08))
+                        .blendMode(.hardLight)
+                        .blur(radius: 20) // Figma blur 40 ≈ SwiftUI radius 20
+                }
+                .clipShape(shape)
+                .allowsHitTesting(false)
             }
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .shadow(color: Color.black.opacity(0.10), radius: 10, x: 0, y: 8)
     }
 }

@@ -14,7 +14,6 @@ struct HomeHeaderView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            
             // Left side: greeting
             HStack(spacing: 0) {
                 Text("Hi, \(username)")
@@ -27,16 +26,8 @@ struct HomeHeaderView: View {
 
             Spacer(minLength: 0) // Auto spacing
 
-            // Right side: buttons
-            HStack(spacing: 16) {
-                CircleIconButton(assetName: "SongRequest") {
-                    onMusic()
-                }
-
-                CircleIconButton(assetName: "RSVP") {
-                    onRSVP()
-                }
-            }
+            // Right side: burger menu
+            HeaderMenuButton(onRSVP: onRSVP, onMusic: onMusic)
         }
         .padding(.horizontal, 21)
     }

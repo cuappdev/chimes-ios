@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SongRequestView: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var songText: String = ""
 
     // Placeholder data until a backend is wired in.
@@ -24,7 +25,8 @@ struct SongRequestView: View {
 
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 0) {
-                    SongRequestHeaderView()
+                    SongRequestHeaderView(onBell: { dismiss() })
+                        .zIndex(1) // keep dropdown above the cards below
 
                     SongRequestWarningView()
                         .padding(.top, 36)

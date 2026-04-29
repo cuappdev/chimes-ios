@@ -19,10 +19,7 @@ struct SongRequestSubmitButton: View {
                 .padding(.top, 15.083)
                 .padding(.bottom, 14.917)
                 .frame(width: 340, height: 46)
-                .background(
-                    GlassContainerBackground(cornerRadius: 23)
-                        .shadow(color: .black.opacity(0.09), radius: 3.7, x: 0, y: 4)
-                )
+                .background(GlassContainerBackground(cornerRadius: 23))
         }
         .buttonStyle(.plain)
         .frame(maxWidth: .infinity, alignment: .center)
