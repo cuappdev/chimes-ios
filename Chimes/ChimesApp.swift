@@ -6,12 +6,25 @@
 //
 
 import SwiftUI
+import FirebaseCore
+import GoogleSignIn
 
 @main
 struct ChimesApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @State private var authManager: AuthenticationManager
+
+    init() {
+        FirebaseApp.configure()
+        _authManager = State(initialValue: AuthenticationManager())
+    }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(authManager: authManager)
+                .onOpenURL { url in
+                    GIDSignIn.sharedInstance.handle(url)
+                }
         }
     }
 }

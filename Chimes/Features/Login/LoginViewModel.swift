@@ -12,15 +12,23 @@ import SwiftUI
 @Observable
 class LoginViewModel {
     var path = NavigationPath()
-    var loggedIn: Bool = false
-    
-    // TODO: Authentication stuff
-    
-    init() { }
-    
-    // Dummy for now, replace with login() functino after auth set up
-    func logIn() {
-        loggedIn = true
+
+    var loggedIn: Bool {
+        authManager.isLoggedIn
     }
-    
+
+    let authManager: AuthenticationManager
+
+    init(authManager: AuthenticationManager) {
+        self.authManager = authManager
+    }
+
+    func logIn() {
+        authManager.signInWithGoogle()
+    }
+
+    func logInAsGuest() {
+        authManager.signInAnonymously()
+    }
+
 }
