@@ -9,12 +9,12 @@ import SwiftUI
 
 struct SongRequestCardView: View {
     @Binding var songText: String
+    @Binding var confirmedSong: RequestedSong?
 
     /// Songs offered as autocomplete suggestions while the user types.
     var suggestions: [RequestedSong] = []
 
     @State private var selectedSongID: RequestedSong.ID?
-    @State private var confirmedSong: RequestedSong?
     @FocusState private var isInputFocused: Bool
 
     private let secondaryTextColor = Color(red: 0x5B / 255.0,

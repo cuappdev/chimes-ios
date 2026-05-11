@@ -10,6 +10,8 @@ import SwiftUI
 struct SongRequestView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var songText: String = ""
+    @State private var confirmedSong: RequestedSong?
+    @State private var showingRequested = false
 
     // Placeholder data until a backend is wired in.
     private let recentlyRequested: [RequestedSong] = [
@@ -33,6 +35,7 @@ struct SongRequestView: View {
 
                     SongRequestCardView(
                         songText: $songText,
+                        confirmedSong: $confirmedSong,
                         suggestions: recentlyRequested
                     )
                     .padding(.top, 28)
@@ -41,8 +44,11 @@ struct SongRequestView: View {
                     RecentlyRequestedSongsView(songs: recentlyRequested)
                         .padding(.top, 28)
 
-                    SongRequestSubmitButton(action: submitRequest)
-                        .padding(.top, 36)
+                    SongRequestSubmitButton(
+                        action: submitRequest,
+                        isEnabled: confirmedSong != nil
+                    )
+                    .padding(.top, 36)
                 }
                 .padding(.top, 95)
                 .padding(.bottom, 45)
@@ -50,11 +56,16 @@ struct SongRequestView: View {
             .ignoresSafeArea(.container, edges: .top)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .navigationDestination(isPresented: $showingRequested) {
+            SongRequestedView()
+                .toolbar(.hidden, for: .navigationBar)
+        }
     }
 
     private func submitRequest() {
         // TODO: validate + hand the song text off to backend.
         print("Submit song request:", songText)
+        showingRequested = true
     }
 }
 

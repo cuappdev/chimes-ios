@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SongRequestSubmitButton: View {
     let action: () -> Void
+    var isEnabled: Bool = true
 
     var body: some View {
         Button(action: action) {
@@ -22,6 +23,8 @@ struct SongRequestSubmitButton: View {
                 .background(GlassContainerBackground(cornerRadius: 23))
         }
         .buttonStyle(.plain)
+        .disabled(!isEnabled)
+        .opacity(isEnabled ? 1 : 0.5)
         .frame(maxWidth: .infinity, alignment: .center)
     }
 }

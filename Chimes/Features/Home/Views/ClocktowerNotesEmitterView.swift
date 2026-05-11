@@ -12,8 +12,10 @@ struct ClocktowerNotesEmitterView: View {
     let topBoundaryEnd: CGPoint
     let bottomBoundaryEnd: CGPoint
     var spawnInterval: Double = 0.55
+    var spawnDuration: Double = 10.0
 
     @State private var notes: [Note] = []
+    @State private var spawnTimer: Timer?
 
     struct Note: Identifiable {
         let id = UUID()
@@ -32,14 +34,33 @@ struct ClocktowerNotesEmitterView: View {
         }
         .allowsHitTesting(false)
         .onAppear { startSpawning() }
+        .onDisappear { stopSpawning() }
     }
 
     // MARK: - Spawn loop
 
     private func startSpawning() {
-        Timer.scheduledTimer(withTimeInterval: spawnInterval, repeats: true) { _ in
+        stopSpawning()
+        notes.removeAll()
+
+        spawnOne()
+        let timer = Timer.scheduledTimer(withTimeInterval: spawnInterval, repeats: true) { _ in
             spawnOne()
         }
+        spawnTimer = timer
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + spawnDuration) {
+            if spawnTimer === timer {
+                stopSpawning()
+            } else {
+                timer.invalidate()
+            }
+        }
+    }
+
+    private func stopSpawning() {
+        spawnTimer?.invalidate()
+        spawnTimer = nil
     }
 
     private func spawnOne() {
@@ -83,10 +104,9 @@ struct ClocktowerNotesEmitterView: View {
 
     private func assetsForCurrentTimeOfDay() -> [String] {
         switch currentTimeOfDay() {
-        case .day:
+        case .day, .sunset:
+
             return ["MusicDay1", "MusicDay2", "MusicDay3"]
-        case .sunset:
-            return ["MusicSunset1", "MusicSunset2", "MusicSunset3"]
         case .night:
             return ["MusicNight1", "MusicNight2", "MusicNight3"]
         }
